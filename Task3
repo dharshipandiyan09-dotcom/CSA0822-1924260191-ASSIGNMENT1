@@ -1,1 +1,44 @@
+def normalise(text): 
+    text = text.strip() 
+    text = text.replace(" ", "") 
+    text = text.replace("-", "") 
+    return text.upper() 
+def is_valid(reg): 
+    if len(reg) not in (9, 10): 
+        return False 
+    state = reg[:2] 
+    district = reg[2:4] 
+    if not state.isalpha(): 
+
+        return False 
+    if not district.isdigit(): 
+        return False 
+    if len(reg) == 9: 
+        series = reg[4:5] 
+        number = reg[5:9] 
+    else: 
+        series = reg[4:6] 
+        number = reg[6:10] 
+    return series.isalpha() and number.isdigit() 
+def format_number(reg): 
+    if not is_valid(reg): 
+        return "INVALID" 
+    return ( 
+        reg[:2] + " " + 
+        reg[2:4] + " " + 
+        reg[4:-4] + " " + 
+        reg[-4:] 
+    ) 
+samples = [ 
+    "tn 09 ab 1234", 
+    "KA-01-M-0007", 
+    "TN9AB1234", 
+    "TN 22 1234 AB" 
+] 
+for raw in samples: 
+    reg = normalise(raw) 
+    status = "VALID" if is_valid(reg) else "INVALID" 
+    print(raw, "->", reg, status) 
+    if status == "VALID": 
+        print("Formatted:", format_number(reg)) 
 
